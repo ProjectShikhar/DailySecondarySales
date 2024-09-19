@@ -167,3 +167,60 @@
                 <th>Distributor Name</th>
                 <th>Today's Secondary Sale</th>
                 <th>Today's Focus SKU Sale</th
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Data to Google Sheets</title>
+</head>
+<body>
+    <h1>Submit Data</h1>
+    <form id="dataForm">
+        <label for="so">SO Name:</label>
+        <input type="text" id="so" name="so" required><br><br>
+
+        <label for="distributor">Distributor Name:</label>
+        <input type="text" id="distributor" name="distributor" required><br><br>
+
+        <label for="secondarySale">Today's Secondary Sale:</label>
+        <input type="number" id="secondarySale" name="secondarySale" required><br><br>
+
+        <label for="focusSkuSale">Today's Focus SKU Sale:</label>
+        <input type="number" id="focusSkuSale" name="focusSkuSale" required><br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <p id="responseMessage"></p>
+
+    <script>
+        const form = document.getElementById('dataForm');
+        const scriptURL = 'YOUR_GOOGLE_APPS_SCRIPT_URL'; // Paste your Google Apps Script URL here
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const data = {
+                so: formData.get('so'),
+                distributor: formData.get('distributor'),
+                secondarySale: formData.get('secondarySale'),
+                focusSkuSale: formData.get('focusSkuSale')
+            };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('responseMessage').textContent = "Data submitted successfully!";
+            })
+            .catch(error => console.error('Error!', error));
+        });
+    </script>
+</body>
+</html>
