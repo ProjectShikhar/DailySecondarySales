@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Today's Secondary Sale</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        /* Styling the logo */
+        .logo {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        /* To prevent the form fields from growing too wide */
+        form input[type="text"], form input[type="number"] {
+            width: 200px;
+        }
+    </style>
+    <script>
+        // Data for SO and Distributor relationship
+        const data = {
+            "Amit Kumar": ["Yashu Enterprises", "Vijay Marketing", "Vasanthi Enterprises", "Trimurthi Agencies", "Surya Enterprises", "Srinath Agencies"],
+            "Aniket Mishra": ["Yusuf Foods", "Vijaya Sai Agencies", "Vasavi Marketing", "U D Enterprises", "Susanth G Traders", "Srinivasa Agencies"],
+            "Asheesh Kumar": ["VJ Mitun Marketing", "Venkata Simhadri Traders", "V.Jaguva Traders", "Thiruchendur Murugan Agency", "Sudha Agencies", "Sri Vinayaga Enterprises"],
+            "Ashutosh Rai": ["Vinay Enterprises", "Vels Marketing", "Upender Agencies", "Thangavel Traders", "Srujan Enterprises", "Sri Vetrivel Agencies"],
+            "Atul Singh": ["VR Enterprises", "Venkateshwara Agency Gangadhar", "V.V.P. Agencies", "Thirukrishnamani Traders", "Sunshine Traders", "Sri Vinayaka Provision Stores"],
+            "Deepak Kewat": ["Vivekananda Enterprises", "Venkata Shiva Traders", "V.A. Agencies", "Thathwamasi Agencies", "Star Enterprises", "Sri Vijaya Vinayagar Agencies"],
+            "Girja Shankar": ["ZEUS Corporation", "Vijaykalyan Agencies", "Veerabhadra Agencies", "Ullas Enterprises", "Swathi Enterprises", "Srinivasa Enterprises"],
+            "Kamal Kishor": ["Vinayak Agencies", "Venkata Padma Enterprises", "V S Marketing", "Thaqwa Agencies", "SSS Enterprises", "Sri Vetrivel Agencies"],
+            "Kausar Abbas": ["Vikram Traders", "Veinz Marketing Private Limite", "Uma Sai Harini General", "Thachangad Associates", "Srujan Enterprises", "Sri Venkateswara General Store"],
+            "Mohd Irfan": ["Y3 Enterprises", "Venus Agencies", "Varahi Enterprises", "Thirumala Enterprises", "Surabhi Traders", "Sridhivya Agencies"],
+            "Raj Prakash": ["Yashwi Agencies", "Vijaya Enterprises", "Vasavi Agencies", "Trupti Agency", "Surya Marketing Corporation", "Srinivasa Agencies"],
+            "Ram Lakhan": ["Vishwak Icecreams", "Venkata Sai Agencies", "V. L Enterprises", "Tharun Agencies", "Star Agency", "Sri Vigneswara Agencies"],
+            "Sarafat Ali": ["Vysali Distributors", "Vennila Agencies", "Vanaja Enterprises", "Thirumala Enterprises", "Super Traders", "Sri Yogalakshmi Agency"],
+            "Satyam Shukla": ["Zunaira Traders", "Vijaykumar Agency", "Veerbhadreshwar Agencies", "Ullas Enterprises", "T N Agencies", "Srivaari Agencies"],
+            "Sumit Bajpai": ["Yash Marketing", "Victory Enterprises", "Varun Trading Co", "TMR Traders", "Suraj Agencies", "Srihari Enterprises"],
+            "Yogendra Prataap Singh": ["Zayan Marketing", "Vijaya Sweets", "Veer Brothers", "Ujjeevan Enterprises", "SVR Enterprises", "Srinivasa Agencies"]
+        };
+
+        // Function to populate Distributor dropdown based on SO selected
+        function populateDistributors() {
+            const soSelect = document.getElementById("so");
+            const distributorSelect = document.getElementById("distributor");
+            const selectedSO = soSelect.value;
+
+            // Clear existing options
+            distributorSelect.innerHTML = "";
+
+            // Populate new options
+            if (selectedSO in data) {
+                data[selectedSO].forEach(distributor => {
+                    const option = document.createElement("option");
+                    option.value = distributor;
+                    option.text = distributor;
+                    distributorSelect.add(option);
+                });
+            }
+        }
+
+        // Function to handle form submission and update the table
+        function handleSubmit(event) {
+            event.preventDefault();
+
+            const soName = document.getElementById("so").value;
+            const distributorName = document.getElementById("distributor").value;
+            const secondarySale = document.getElementById("secondarySale").value;
+            const focusSkuSale = document.getElementById("focusSkuSale").value;
+
+            if (soName && distributorName && secondarySale && focusSkuSale) {
+                const table = document.getElementById("saleTable");
+                const newRow = table.insertRow(-1);
+
+                const soCell = newRow.insertCell(0);
+                const distributorCell = newRow.insertCell(1);
+                const secondarySaleCell = newRow.insertCell(2);
+                const focusSkuSaleCell = newRow.insertCell(3);
+
+                soCell.textContent = soName;
+                distributorCell.textContent = distributorName;
+                secondarySaleCell.textContent = secondarySale;
+                focusSkuSaleCell.textContent = focusSkuSale;
+
+                // Make the newly inserted row editable
+                secondarySaleCell.contentEditable = "true";
+                focusSkuSaleCell.contentEditable = "true";
+
+                // Clear the form after submission
+                document.getElementById("saleForm").reset();
+                populateDistributors(); // Reset distributor dropdown
+            }
+        }
+    </script>
+</head>
+<body>
+    <!-- Logo image at top right -->
+    <img src="/mnt/data/image.png" alt="Shikhar Logo" class="logo" width="150">
+
+    <h1>Today's Secondary Sale</h1>
+    <form id="saleForm" onsubmit="handleSubmit(event)">
+        <label for="so">SO Name:</label>
+        <select id="so" name="so" onchange="populateDistributors()" required>
+            <option value="">Select SO</option>
+            <option value="Amit Kumar">Amit Kumar</option>
+            <option value="Aniket Mishra">Aniket Mishra</option>
+            <option value="Asheesh Kumar">Asheesh Kumar</option>
+            <option value="Ashutosh Rai">Ashutosh Rai</option>
+            <option value="Atul Singh">Atul Singh</option>
+            <option value="Deepak Kewat">Deepak Kewat</option>
+            <option value="Girja Shankar">Girja Shankar</option>
+            <option value="Kamal Kishor">Kamal Kishor</option>
+            <option value="Kausar Abbas">Kausar Abbas</option>
+            <option value="Mohd Irfan">Mohd Irfan</option>
+            <option value="Raj Prakash">Raj Prakash</option>
+            <option value="Ram Lakhan">Ram Lakhan</option>
+            <option value="Sarafat Ali">Sarafat Ali</option>
+            <option value="Satyam Shukla">Satyam Shukla</option>
+            <option value="Sumit Bajpai">Sumit Bajpai</option>
+            <option value="Yogendra Prataap Singh">Yogendra Prataap Singh</option>
+        </select>
+
+        <br><br>
+
+        <label for="distributor">Distributor Name:</label>
+        <select id="distributor" name="distributor" required>
+            <option value="">Select Distributor</option>
+        </select>
+
+        <br><br>
+
+        <label for="secondarySale">Today's Secondary Sale:</label>
+        <input type="number" id="secondarySale" name="secondarySale" required>
+
+        <br><br>
+
+        <label for="focusSkuSale">Today's Focus SKU Sale:</label>
+        <input type="number" id="focusSkuSale" name="focusSkuSale" required>
+
+        <br><br>
+
+        <input type="submit" value="Submit">
+    </form>
+
+    <h2>Captured Data</h2>
+    <table id="saleTable">
+        <thead>
+            <tr>
+                <th>SO Name</th>
+                <th>Distributor Name</th>
+                <th>Today's Secondary Sale</th>
+                <th>Today's Focus SKU Sale</th
